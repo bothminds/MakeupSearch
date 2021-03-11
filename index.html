@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Makeup Product Search</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+    <!-- Import Bootstrap CSS  -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <!-- Import Vue.js -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- Import Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <main>
+      <div id="app">
+        <!-- navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light form-inline">
+          <div class="container">
+            <a class="navbar-brand" href="#">Makeup Product Search</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div
+              class="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            ></div>
+
+            <!-- Brands SELECT -->
+            <label for="Brans" class="mr-2">Brands</label>
+            <select
+              id="brand"
+              name="brand"
+              class="form-control form-control-sm text-capitalize mr-2"
+              @change="update_filters($event)"
+            >
+              <option value="" selected>Select</option>
+              <option v-for="b in brands" :value="b" :key="b">{{ b }}</option>
+            </select>
+
+            <!-- Product Type SELECT -->
+            <label for="Product Type" class="mr-2">Product Type</label>
+            <select
+              id="product_type"
+              name="product_type"
+              class="form-control form-control-sm mr-2 text-capitalize"
+              @change="update_filters($event)"
+            >
+              <option value="" selected>Select</option>
+              <option v-for="p in product_type" :value="p" :key="p">
+                {{ p }}
+              </option>
+            </select>
+
+            <!-- category SELECT -->
+            <label for="Category" class="mr-2">Category</label>
+            <select
+              id="category"
+              name="category"
+              class="form-control form-control-sm text-capitalize mr-2"
+              @change="update_filters($event)"
+            >
+              <option value="" selected>Select</option>
+              <option v-for="c in category" :value="c" :key="c">{{ c }}</option>
+            </select>
+          </div>
+        </nav>
+        <!-- navigation END -->
+        <!-- bottom section -->
+        <div class="container py-4">
+          <div>{{ filters }}</div>
+          Products Found: {{ results.length }}
+          <div class="row hidden border" v-show="results">
+            <!-- Product Found Section -->
+            <div class="col-sm-6 table-responseive">
+              <table
+                v-if="results.length > 0"
+                class="table table-fixed table-sm"
+              >
+                <tbody>
+                  <tr v-for="(result, index) in results">
+                    <td
+                      @mouseover="selected_product(index)"
+                      class="text-capitalize"
+                    >
+                      {{ result.name }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div v-else><h3>No Products Found</h3></div>
+            </div>
+            <!-- Product Found Section END-->
+
+            <!-- Product Detail Section -->
+            <div class="col-sm-6">
+              <div v-if="selected_item !== ''">
+                <table class="details_table">
+                  <thead>
+                    <tr>
+                      <th colspan="2">Product Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Brand</th>
+                      <td class="text-capitalize">{{ selected_item.brand }}</td>
+                    </tr>
+                    <tr>
+                      <th>Type</th>
+                      <td class="text-capitalize">
+                        {{ selected_item.product_type }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Category</th>
+                      <td class="text-capitalize">
+                        {{ selected_item.category }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td class="text-capitalize">
+                        {{ selected_item.description }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Tags</th>
+                      <td class="text-capitalize">
+                        <span v-for="(tag, index) in selected_item.tag_list">
+                          {{ tag }},
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Name</th>
+                      <td class="text-capitalize">{{ selected_item.name }}</td>
+                    </tr>
+                    <tr>
+                      <th>Price</th>
+                      <td class="text-capitalize">
+                        {{ selected_item.price_sign }}{{ selected_item.price }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Colors</th>
+                      <td class="text-capitalize">
+                        <div
+                          class=""
+                          v-if="selected_item.product_colors.length > 0"
+                        >
+                          <span
+                            v-for="(colors, index) in selected_item.product_colors"
+                            class="color_swatch"
+                            :style="{ 'background-color' : colors.hex_value}"
+                          >
+                            {{ colors.colour_name }}
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <img
+                          class="prod_img img-fluid"
+                          v-bind:src="'http://'+selected_item.api_featured_image"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Product Detail Section END -->
+          </div>
+        </div>
+        <!-- bottom section END -->
+      </div>
+    </main>
+    <!-- Import Js -->
+    <script src="./main.js"></script>
+    <script>
+      const mountedApp = app.mount("#app");
+    </script>
+  </body>
+</html>

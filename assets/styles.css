@@ -1,0 +1,43 @@
+
+.table-fixed tbody {
+    height: 600px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+    display: block;
+}
+
+.table-fixed tbody td,
+.table-fixed tbody th,
+.table-fixed thead>tr>th {
+    float: left;
+    position: relative;
+
+}
+.prod_img {
+  max-height: 350px;
+}
+.color_swatch {
+  min-width: 20px;
+  height:auto;
+  margin:2px;
+  padding: 2px;
+  color: white;
+  font-size: small;
+}
+.detail_column {
+  min-width: 50px;
+}
+.details_table {
+  width: auto;
+  border-spacing: 5px;
+}
+.details_table tbody th {
+    width: 80px;
+}
