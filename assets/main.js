@@ -64,7 +64,7 @@
          var APIresults = null;
 
          //uncomment below to use local saved API results if remote is down.
-         //this.url = 'products.json'
+         //this.url = 'assets/products.json'
          axios.get(this.url).then(response => {
              APIresults = response.data;
              var brands = this.brands;
