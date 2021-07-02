@@ -18,5 +18,5 @@ Double click index.html if on a PC or whatever you do on a Mac.  Make sure to wa
 
 ### Video Demo
 View the solution in action here https://1drv.ms/u/s!AtbSPl5Jbjx3nIk5Pe65mn-tVRZ97A?e=BbI6Mx
-# MakeupSearch
+
 
